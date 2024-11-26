@@ -1,4 +1,5 @@
 const products = 'https://fakestoreapi.com/products'
+const productsList = document.querySelector('.products_list')
 
 fetch(products,
     {
@@ -9,33 +10,42 @@ fetch(products,
     }).then(res=>res.json())
     .then(json=> {
         let render = json.map(item =>{
-            const productsList = document.querySelector('.products_list')
             const productBlock = document.createElement('div')
+            productBlock.className = 'card'
             productBlock.innerHTML = `
             <h2> ${item.title} </h2>
             <p> ${item.price} </p>
-            <button onclick="addToCart(${item.id})"> Добавить в корзину </button>
+            <button> Добавить в корзину </button>
             `
+            productBlock.addEventListener('click', ()=>{
+                addToCart(item.id, item.title, item.price)
+            })
             productsList.append(productBlock)
-
         })
-        function renderProducts(productId){
-            let cart = JSON.parse(localStorage.getItem('cart')) || []
-            const product = products.search(element=> element.id === productId)
-
-            const cartItem = cart.find(item => item.id === productId)
-
-            if (cartItem) {
-                cartItem.count += 1
-            } else{
-                cart.push({...product, count: 1})//Деструктуризация
+        function addToCart(productId, productTitle, productPrice){
+                const cart = JSON.parse(localStorage.getItem('cart')) || []
+                const cartItem = cart.find(item => item.id === productId)
+                
+                
+                
+            
+                if (cartItem) {
+                    cartItem.count += 1
+                    console.log('Добавление есть');
+                    
+                } else if(cartItem){
+                    
+                } 
+                else{
+                    cart.push({id:productId, title: productTitle, price: productPrice, count: 1})
+                    console.log('Добавление нет');
+                }
+                localStorage.setItem('cart', JSON.stringify(cart))
+            
+                console.log(cart);
+                
             }
-            localStorage.setItem('cart', JSON.stringify(cart))
-        
-            console.log(cart);
-
-        }
-        renderProducts()
+            addToCart()
     })
         
             
@@ -61,20 +71,20 @@ fetch(products,
 // }
 // renderProducts()
 
-let cart = JSON.parse(localStorage.getItem('cart')) || []
+// let cart = JSON.parse(localStorage.getItem('cart')) || []
 
-function addToCart(productId){
-    const product = products.find(element=> element.id === productId)
+// function addToCart(productId){
+//     const product = products.find(element=> element.id === productId)
 
-    const cartItem = cart.find(item => item.id === productId)
+//     const cartItem = cart.find(item => item.id === productId)
 
-    if (cartItem) {
-        cartItem.count += 1
-    } else{
-        cart.push({...product, count: 1})//Деструктуризация
-    }
-    localStorage.setItem('cart', JSON.stringify(cart))
+//     if (cartItem) {
+//         cartItem.count += 1
+//     } else{
+//         cart.push({...product, count: 1})//Деструктуризация
+//     }
+//     localStorage.setItem('cart', JSON.stringify(cart))
 
-    console.log(cart);
+//     console.log(cart);
     
-}
+// }
