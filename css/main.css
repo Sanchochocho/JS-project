@@ -1,0 +1,119 @@
+/* Общие стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #111; /* Очень темный фон */
+    color: #fff; /* Белый текст */
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Стиль шапки */
+.header {
+    background-color: transparent; /* Прозрачная шапка */
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.logo img {
+    max-width: 180px;
+    vertical-align: middle;
+}
+
+.main-nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
+.main-nav a {
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: #9370db; /* Фиолетовый акцент */
+}
+
+/* Стиль секции героя */
+.hero {
+    background: url('../images/istockphoto-1416449650-612x612.jpg'); /* Изображение баннера */
+    background-size: cover;
+    background-position: center;
+    padding: 240px 0 160px; /* Увеличено верхнее поле для соединения с шапкой */
+    text-align: center;
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(17, 17, 17, 0.95), rgba(17, 17, 17, 0.85)); /* Дополнительный градиент для затемнения */
+    z-index: 1;
+}
+
+.hero > * {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 60px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Тень для улучшения читаемости */
+}
+
+.hero p {
+    font-size: 28px;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.btn-primary {
+    background-color: #9370db; /* Фиолетовый акцент */
+    color: #fff;
+    padding: 16px 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 0 10px rgba(147, 112, 219, 0.5); /* Легкая тень для объема */
+}
+
+.btn-primary:hover {
+    background-color: #774bae; /* Более темный фиолетовый */
+}
+
+/* Стиль футера */
+.footer {
+    background-color: #222; /* Темный фон */
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+}

@@ -1,5 +1,5 @@
-const products = 'https://dummyjson.com/products'
-console.log(products)
+const products = 'https://api.rawg.io/api/games?key=b0ce7c37b3964748a88c03aa93ff31cf'
+
 
 const productsList = document.querySelector('.products_list')
 
@@ -11,22 +11,24 @@ fetch(products,
         }
     }).then(res=>res.json())
     .then(json => {
-        console.log(json.products);
+        console.log(json);
         
-        let render = json.products.forEach(item => {
+        
+        let render = json.results.forEach(item => {
             const productBlock = document.createElement('div');
             productBlock.className = 'card';
             const imageUrl = item.images && item.images.length > 0 ? item.images[0] : '';
             productBlock.innerHTML = `
-                <h2 class='products_title'> ${item.title} </h2>
-                <img src="${imageUrl}" alt="" class='products_img'>
-                <p class='price'> price: ${item.price}$ </p>
+                <h2 class='products_title'> ${item.name} </h2>
+                <img src="${item.background_image}" alt="" class='products_img'>
+                <p class='price'> price: ${item.rating}$ </p>
                 <button class='add'> Добавить в корзину </button>
             `;
             productBlock.addEventListener('click', ()=>{
-                addToCart(item.id, item.title, item.price)
+                addToCart(item.id, item.name, item.rating)
             })
             productsList.append(productBlock)
+            
         })
         function addToCart(productId, productTitle, productPrice){
             const cart = JSON.parse(localStorage.getItem('cart')) || []
