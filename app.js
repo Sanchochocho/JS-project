@@ -1,4 +1,5 @@
 const products = 'https://dummyjson.com/products'
+console.log(products)
 
 const productsList = document.querySelector('.products_list')
 
@@ -10,8 +11,50 @@ fetch(products,
         }
     }).then(res=>res.json())
     .then(json => {
-        console.log(json);
-    })
+        console.log(json.products);
+        
+        let render = json.products.forEach(item => {
+            const productBlock = document.createElement('div');
+            productBlock.className = 'card';
+            const imageUrl = item.images && item.images.length > 0 ? item.images[0] : '';
+            productBlock.innerHTML = `
+                <h2 class='products_title'> ${item.title} </h2>
+                <img src="${imageUrl}" alt="" class='products_img'>
+                <p class='price'> price: ${item.price}$ </p>
+                <button class='add'> Добавить в корзину </button>
+            `;
+            productBlock.addEventListener('click', ()=>{
+                addToCart(item.id, item.title, item.price)
+            })
+            productsList.append(productBlock)
+        })
+        function addToCart(productId, productTitle, productPrice){
+            const cart = JSON.parse(localStorage.getItem('cart')) || []
+            const cartItem = cart.find(item => item.id === productId)
+            
+            
+            
+        
+            if (cartItem) {
+                cartItem.count += 1
+                console.log('Добавление есть');
+                
+            } else if(cartItem){
+                
+            } 
+            else{
+                cart.push({id:productId, title: productTitle, price: productPrice, count: 1})
+                console.log('Добавление нет');
+            }
+            localStorage.setItem('cart', JSON.stringify(cart))
+        
+            console.log(cart);
+            
+        }
+        addToCart()
+})
+
+    
     
     // .then(json=> {
         
