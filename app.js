@@ -53,6 +53,8 @@ fetch(products,
             
         }
         addToCart()
+
+        
 })
 
     

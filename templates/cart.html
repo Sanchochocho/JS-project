@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="../css/cart.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Ваша корзина</h1>
+        <div class="cart-item">
+            <img src="game1.jpg" alt="Игра" class="item-img">
+            <div class="item-details">
+                <h2>Название игры</h2>
+                <p>Краткое описание игры</p>
+            </div>
+            <div class="item-quantity">
+                <button class="btn-minus">-</button>
+                <span>1</span>
+                <button class="btn-plus">+</button>
+            </div>
+            <div class="item-price">999₽</div>
+            <button class="btn-remove">Удалить</button>
+        </div>
+        
+        <div class="cart-footer">
+            <h2>Итого: 2997₽</h2>
+            <button class="btn-checkout">Оформить заказ</button>
+        </div>
+    </div>
+
+    <script src="../app.js"></script>
+</body>
+</html>

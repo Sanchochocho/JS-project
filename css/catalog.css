@@ -10,22 +10,6 @@ body {
     background-color: rgb(35, 29, 29);
     
 }
-/* .products_list{
-    width: 1700px;
-    height: 1700px;
-    align-items: center;
-    justify-content: 50px space-between;
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 150px;
-    gap: 50px;
-}
-body{
-    background-color: lightblue;
-    align-items: center;
-    justify-content: center;
-    
-}  */
 .products_list { 
     width: 1900px;
     height: 2000px;
