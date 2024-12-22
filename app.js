@@ -77,7 +77,7 @@ document.getElementById('login-form')?.addEventListener('submit', (event) => {
     if (email === savedEmail && password === savedPassword) {
         localStorage.setItem('isLoggedIn', 'true');
         alert('Вход выполнен успешно!');
-        window.location.href = './cart.html'; // Перенаправление на главную страницу
+        window.location.href = './cart.html';
     } else {
         alert('Неверные данные!');
     }
@@ -150,3 +150,92 @@ function renderCart() {
 //     console.log(cart);
     
 // }
+
+
+
+const cartItemsContainer = document.getElementById("cart-items");
+const cartSummary = document.getElementById("cart-summary");
+
+function loadCartItems() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Ваша корзина пуста.</p>";
+        cartSummary.textContent = "";
+        return;
+    }
+
+    cartItemsContainer.innerHTML = "";
+    let totalPrice = 0;
+
+    cart.forEach((item) => {
+        const cartItem = document.createElement("div");
+        cartItem.className = "cart-item";
+
+        cartItem.innerHTML = `
+            <h3>${item.title}</h3>
+            <img src="${item.image}" alt="${item.title}">
+            <p>Цена за единицу: ${item.price}₽</p>
+            <div class="quantity-controls">
+                <button class="decrease" data-id="${item.id}">-</button>
+                <span class="quantity">${item.count}</span>
+                <button class="increase" data-id="${item.id}">+</button>
+            </div>
+            <p>Общая цена: <span class="item-total">${item.price * item.count}</span>₽</p>
+            <button class="remove-item" data-id="${item.id}">Удалить</button>
+        `;
+
+        cartItemsContainer.appendChild(cartItem);
+        totalPrice += item.price * item.count;
+    });
+
+    cartSummary.textContent = `Общая сумма: ${totalPrice}₽`;
+
+    addEventListeners();
+}
+function updateItemCount(productId, change) {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const itemIndex = cart.findIndex((item) => item.id === productId);
+    if (itemIndex !== -1) {
+        cart[itemIndex].count += change;
+
+        if (cart[itemIndex].count <= 0) {
+            cart.splice(itemIndex, 1);
+        }
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCartItems();
+}
+function removeFromCart(productId) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart = cart.filter((item) => item.id !== productId);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCartItems();
+}
+
+function addEventListeners() {
+    const increaseButtons = document.querySelectorAll(".increase");
+    const decreaseButtons = document.querySelectorAll(".decrease");
+    const removeButtons = document.querySelectorAll(".remove-item");
+    increaseButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const productId = event.target.dataset.id;
+            updateItemCount(productId, 1);
+        });
+    });
+    decreaseButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const productId = event.target.dataset.id;
+            updateItemCount(productId, -1);
+        });
+    });
+
+    removeButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const productId = event.target.dataset.id;
+            removeFromCart(productId);
+        });
+    });
+}
+
+loadCartItems();
