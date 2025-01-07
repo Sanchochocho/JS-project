@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Корзина</title>
+    <title>Личный кабинет</title>
     <style>
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(145deg, #3c0079, #18034f);
             color: #fff;
+            margin: 0;
         }
-
         header {
             background: rgba(0, 0, 0, 0.8);
             padding: 15px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        
 
         .logo h1 {
             margin: 0;
@@ -30,7 +25,9 @@
             color: #fff;
             margin-bottom: 30px;
         }
-
+        .main-nav{
+            margin-left: 30px;
+        }
         .main-nav ul {
             list-style: none;
             padding: 0;
@@ -55,77 +52,51 @@
             font-size: 36px;
             margin: 20px 0;
         }
+        
 
-        #cart-items {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+        h1, h2 {
+            text-align: center;
+        }
+
+        .profile-info, .purchases {
             margin-bottom: 20px;
         }
 
-        .cart-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 0;
+        .profile-info p, .purchases p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .profile-info{
+            margin-left: 20px;
         }
 
-        .cart-item:last-child {
-            border-bottom: none;
+        .purchase-item {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
 
-        h3 {
-            margin: 0 0 10px 0;
+        .empty-message {
+            font-style: italic;
+            color: #ccc;
         }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 10px 0;
-        }
-
-        button {
-            background: #6622cc;
+        #clean {
+            background: #cc2262;
             border: none;
             color: #fff;
-            padding: 5px 10px;
+            padding: 10px 20px;
             border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
+            margin-bottom: 20px;
             transition: 0.3s;
         }
 
-        button:hover {
-            background: #7f3de3;
-        }
-
-        .remove-item {
-            background: #cc2262;
-        }
-
-        .remove-item:hover {
+        #clean:hover {
             background: #e33d7f;
         }
 
-        #cart-summary {
-            text-align: right;
-            font-size: 18px;
-            font-weight: bold;
-            
-        }
-        #buy-button {
-            width: 180px;
-            height: 40px;
-            font-size: 15px;
-            margin-top: 20px;
-            margin-left: 30px;
-            margin-bottom: 40px;
-        }
-        img {
-            max-width: 200px;
-            height: 200px;
-            object-fit: cover;
-            margin-bottom: 10px;
-            border-radius: 15px;
-        }
     </style>
 </head>
 <body>
@@ -138,19 +109,24 @@
                 <ul>
                     <li><a href="./index.html">Главная страница</a></li>
                     <li><a href="./catalog.html">Каталог</a></li>
-                    <li><a href="./profile.html">Личный кабинет</a></li>
+                    <li><a href="./cart.html">Корзина</a></li>
                 </ul>
             </nav>
         </div>
     </header>
-    <div class="container">
-        <h1>Ваша корзина</h1>
-        <div id="cart-items"></div>
-        <div id="cart-summary">
-            <button id="buy-button">Купить</button>
+
+    <div class="profile-info">
+        <h2>Информация о пользователе</h2>
+        <p>Email: <span id="user-email"></span></p>
+        <p>Пароль: <span id="user-password"></span></p>
+    </div>
+    <div class="purchases">
+        <h2>Купленные игры</h2>
+        <div id="purchased-games">
+            <p class="empty-message">У вас ещё нет купленных игр.</p>
         </div>
     </div>
-    
-    <script src="../cart.js"></script>
+    <button id="clean">Очистить историю</button>
+    <script src="../profile.js"></script>
 </body>
 </html>

@@ -1,120 +1,116 @@
-// Получаем элементы из HTML
-const cartItemsContainer = document.getElementById("cart-items");
-const cartSummary = document.getElementById("cart-summary");
+const cartItemsContainer = document.getElementById("cart-items")
+const cartSummary = document.getElementById("cart-summary")
 
-// Функция для загрузки товаров из localStorage
 function loadCartItems() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Проверяем, пуста ли корзина
+    const cart = JSON.parse(localStorage.getItem("cart")) || []
     if (cart.length === 0) {
-        cartItemsContainer.innerHTML = "<p>Ваша корзина пуста.</p>";
-        cartSummary.textContent = "";
-        return;
+        cartItemsContainer.innerHTML = "<p>Ваша корзина пуста</p>"
+        cartSummary.innerHTML = ""
+        return
     }
 
-    // Если корзина не пуста, очищаем контейнеры
-    cartItemsContainer.innerHTML = "";
-    let totalPrice = 0;
+    cartItemsContainer.innerHTML = ""
+    let totalPrice = 0
 
-    // Отображаем каждый товар
     cart.forEach((item) => {
-        const cartItem = document.createElement("div");
-        cartItem.className = "cart-item";
+        const cartItem = document.createElement("div")
+        cartItem.className = "cart-item"
 
         cartItem.innerHTML = `
             <h3>${item.title}</h3>
-            <img src="${item.image}" alt="${item.title}">
-            <p>Цена за единицу: ${item.price}₽</p>
+            <img src="${item.image}" alt="">
+            <p>Цена за единицу: ${item.price}$</p>
             <div class="quantity-controls">
                 <button class="decrease" data-id="${item.id}">-</button>
                 <span class="quantity">${item.count}</span>
                 <button class="increase" data-id="${item.id}">+</button>
             </div>
-            <p>Общая цена: <span class="item-total">${item.price * item.count}</span>₽</p>
+            <p>Общая цена: <span class="item-total">${(item.price * item.count).toFixed(2)}</span>$</p>
             <button class="remove-item" data-id="${item.id}">Удалить</button>
-        `;
+        `
 
-        cartItemsContainer.appendChild(cartItem);
+        cartItemsContainer.appendChild(cartItem)
+        totalPrice += item.price * item.count
+    })
 
-        // Увеличиваем общую сумму
-        totalPrice += item.price * item.count;
-    });
+    cartSummary.innerHTML = `
+        Общая сумма: ${totalPrice.toFixed(2)}$
+        <button id="buy-button">Купить</button>
+    `
 
-    // Отображаем общую сумму
-    cartSummary.textContent = `Общая сумма: ${totalPrice}₽`;
-
-    // Обновляем обработчики событий
-    addEventListeners();
+    addEventListeners()
+    addBuyButtonListener(totalPrice)
 }
 
-// Функция для изменения количества товара
+function addBuyButtonListener(totalPrice) {
+    const buyButton = document.getElementById("buy-button")
+    
+    if (buyButton) {
+        buyButton.addEventListener("click", () => {
+            const cart = JSON.parse(localStorage.getItem("cart")) || []
+            if (cart.length === 0) return
+
+            const user = JSON.parse(localStorage.getItem("user")) || {
+                purchasedGames: [],
+            }
+
+            user.purchasedGames = [...user.purchasedGames, ...cart]
+            localStorage.setItem("user", JSON.stringify(user))
+            localStorage.removeItem("cart")
+
+            alert(`Вы совершили покупку на сумму ${totalPrice.toFixed(2)}$. Спасибо за покупку!`)
+            window.location.href = "./profile.html"
+        })
+    }
+}
+
 function updateItemCount(productId, change) {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cart = JSON.parse(localStorage.getItem("cart")) || []
+    const itemIndex = cart.findIndex((item) => String(item.id) === String(productId))
 
-    // Находим товар по ID и обновляем количество
-    const itemIndex = cart.findIndex((item) => item.id === productId);
     if (itemIndex !== -1) {
-        cart[itemIndex].count += change;
+        cart[itemIndex].count += change
 
-        // Удаляем товар, если количество становится 0
-        if (cart[itemIndex].count <= 0) {
-            cart.splice(itemIndex, 1);
+        if (cart[itemIndex].count < 1) {
+            cart[itemIndex].count = 1
         }
     }
-
-    // Сохраняем изменения в localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    // Обновляем отображение
-    loadCartItems();
+    localStorage.setItem("cart", JSON.stringify(cart))
+    loadCartItems()
 }
 
-// Функция для удаления товара
 function removeFromCart(productId) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Удаляем товар по ID
-    cart = cart.filter((item) => item.id !== productId);
-
-    // Сохраняем изменения в localStorage
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    // Обновляем отображение
-    loadCartItems();
+    let cart = JSON.parse(localStorage.getItem("cart")) || []
+    cart = cart.filter((item) => String(item.id) !== String(productId))
+    localStorage.setItem("cart", JSON.stringify(cart))
+    loadCartItems()
 }
 
-// Функция для добавления обработчиков событий
 function addEventListeners() {
-    // Селекторы динамически добавленных кнопок
-    const increaseButtons = document.querySelectorAll(".increase");
-    const decreaseButtons = document.querySelectorAll(".decrease");
-    const removeButtons = document.querySelectorAll(".remove-item");
+    const increaseButtons = document.querySelectorAll(".increase")
+    const decreaseButtons = document.querySelectorAll(".decrease")
+    const removeButtons = document.querySelectorAll(".remove-item")
 
-    // Обработчики для увеличения количества
     increaseButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
-            const productId = event.target.dataset.id;
-            updateItemCount(productId, 1); // Увеличиваем количество
-        });
-    });
+            const productId = event.target.dataset.id
+            updateItemCount(productId, +1)
+        })
+    })
 
-    // Обработчики для уменьшения количества
     decreaseButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
-            const productId = event.target.dataset.id;
-            updateItemCount(productId, -1); // Уменьшаем количество
-        });
-    });
+            const productId = event.target.dataset.id
+            updateItemCount(productId, -1)
+        })
+    })
 
-    // Обработчики для удаления товара
     removeButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
-            const productId = event.target.dataset.id;
-            removeFromCart(productId); // Удаляем товар
-        });
-    });
+            const productId = event.target.dataset.id
+            removeFromCart(productId)
+        })
+    })
 }
 
-// Загружаем товары при открытии страницы
-loadCartItems();
+loadCartItems()
