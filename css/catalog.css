@@ -6,48 +6,57 @@
 
 body { 
     font-family: Arial, sans-serif; 
-    background-color: #3c0079; 
-    padding: 20px; 
+    background-color: #3c0079;  
     color: #ffffff;
     overflow-x: hidden;
 } 
 
 
-.container {
-    display: flex;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
-    justify-content: space-between;
-    align-items: center;
+header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-    font-size: 20px;
-}
+
 
 .logo h1 {
-    max-width: 150px;
+    margin: 0;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 30px;
 }
-
+.main-nav{
+    margin-left: 30px;
+}
 .main-nav ul {
-    list-style-type: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 40px;
+    gap: 25px;
 }
 
 .main-nav a {
-    color: #ffffff;
-    transition: color 0.3s ease;
-    font-size: 25px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    transition: 0.3s;
 }
 
 .main-nav a:hover {
-    color: #9370db;
+    color: #7f3de3;
+}
+
+h1 {
+    text-align: center;
+    font-size: 36px;
+    margin: 20px 0;
+}
+
+
+h1, h2 {
+    text-align: center;
 }
 
 .products_list { 
@@ -148,3 +157,51 @@ a {
         height: 45px;
     }
 }
+
+
+
+#search-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: 0.3s;
+    margin-top: 70px;
+    margin-bottom: 30px;
+    margin-left: 50px;
+    margin-right: 10px;
+}
+
+#search-input:focus {
+    border-color: #6200ea;
+    box-shadow: 0 0 5px rgba(98, 0, 234, 0.5);
+}
+
+#reset-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#reset-button:hover {
+    background-color: #4500b0;
+}
+
+@media (max-width: 768px) {
+    #search-input {
+        width: 200px;
+    }
+
+    #reset-button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+

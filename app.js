@@ -119,3 +119,59 @@ function renderCart() {
 
 
 
+const searchInput = document.querySelector('#search-input')
+const resetButton = document.querySelector('#reset-button')
+
+productsList.before(searchInput)
+productsList.before(resetButton)
+
+let allGames = []
+
+fetch(productsAPI, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+})
+    .then((res) => res.json())
+    .then((json) => {
+        allGames = json.results
+    })
+    .catch((error) => console.error(`Ошибка загрузки продуктов: ${error}`))
+
+
+function filterGames(searchValue) {
+    const filteredGames = allGames.filter((game) =>
+        game.name.toLowerCase().includes(searchValue.toLowerCase())
+    )
+
+    productsList.innerHTML = ''
+    filteredGames.forEach((item) => {
+        const productBlock = document.createElement('div')
+        productBlock.className = 'card'
+        productBlock.innerHTML = `
+            <h2 class='products_title'>${item.name}</h2>
+            <img src="${item.background_image}" alt="${item.name}" class='products_img'>
+            <p class='price'>Цена: ${item.rating}$</p>
+            <button class='add'>Добавить в корзину</button>
+        `
+        productBlock.querySelector('.add').addEventListener('click', () => {
+            if (!isUserLoggedIn()) {
+                alert('Вы не авторизованы. Пожалуйста, зарегистрируйтесь!')
+                window.location.href = './sign_up.html'
+            } else {
+                addToCart(item.id, item.background_image, item.name, item.rating)
+            }
+        })
+        productsList.append(productBlock)
+    })
+}
+
+searchInput.addEventListener('input', () => {
+    const searchValue = searchInput.value.trim()
+    filterGames(searchValue)
+})
+
+resetButton.addEventListener('click', () => {
+    searchInput.value = ''
+    filterGames('')
+})
+
